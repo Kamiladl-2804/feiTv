@@ -6,7 +6,7 @@ package br.edu.fei.model;
 
 /**
  *
- * @author andrezanon
+ * @author kamil
  */
 public class Aluno {
     private String nome;

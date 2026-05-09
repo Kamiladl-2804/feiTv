@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author andrezanon
+ * @author kamil
  */
 public class Controller {
     private CadastroJFrame cadastroView;

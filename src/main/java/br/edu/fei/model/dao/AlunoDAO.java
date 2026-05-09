@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author andrezanon
+ * @author kamil
  */
 public class AlunoDAO {
     private Connection conn;
