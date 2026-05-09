@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package br.edu.fei.sistemaacademico;
+package br.edu.fei.feiTv;
 
 import br.edu.fei.controller.Controller;
 import br.edu.fei.model.dao.Conexao;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
  *
  * @author andrezanon
  */
-public class SistemaAcademico {
+public class feiTv {
 
     public static void main(String[] args) throws SQLException {
         CadastroJFrame cadastroView = new CadastroJFrame();
