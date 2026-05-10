@@ -4,6 +4,11 @@
  */
 package br.edu.fei.view;
 
+import br.edu.fei.controller.Controller;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,15 +17,49 @@ package br.edu.fei.view;
 public class CadastroJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CadastroJFrame.class.getName());
+    private Controller controller;
 
     /**
      * Creates new form CadastroJFrame
      */
     public CadastroJFrame() {
         initComponents();
-        
+        setLocationRelativeTo(null);
     }
 
+    
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    
+    public String getTfNome() {
+        return txtNome.getText();
+    }
+    
+    public String getTfSobrenome() {
+        return txtSobrenome.getText();
+    }
+    
+    public String getTfDataNascimento() {
+        return fmtDataNascimento.getText();
+    }
+    
+    public String getTfCpf() {
+        return fmtCpf.getText();
+    }
+    
+    public String getTfEmail() {
+        return txtEmail.getText();
+    }
+    
+    public String getTfUsuarioCadastro() {
+        return txtUsuarioCadastro.getText();
+    }
+    
+    public String getTfSenha() {
+        return new String(txtSenhaCadastro.getPassword());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,28 +135,24 @@ public class CadastroJFrame extends javax.swing.JFrame {
         jLabel2.setText("Nome");
 
         txtNome.setBackground(new java.awt.Color(204, 204, 204));
-        txtNome.setText("SeuNome");
         txtNome.addActionListener(this::txtNomeActionPerformed);
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Sobrenome");
 
         txtSobrenome.setBackground(new java.awt.Color(204, 204, 204));
-        txtSobrenome.setText("SeuSobrenome");
 
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Cadastre-se");
 
         fmtDataNascimento.setBackground(new java.awt.Color(204, 204, 204));
-        fmtDataNascimento.setText("DD/MM/AA");
         fmtDataNascimento.addActionListener(this::fmtDataNascimentoActionPerformed);
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Data de Nascimento");
 
         fmtCpf.setBackground(new java.awt.Color(204, 204, 204));
-        fmtCpf.setText("000.000.000-00");
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("CPF");
@@ -126,16 +161,13 @@ public class CadastroJFrame extends javax.swing.JFrame {
         jLabel7.setText("E-mail");
 
         txtEmail.setBackground(new java.awt.Color(204, 204, 204));
-        txtEmail.setText("seu@email.com");
 
         txtUsuarioCadastro.setBackground(new java.awt.Color(204, 204, 204));
-        txtUsuarioCadastro.setText("Seu_usuário");
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Nome de Usuário");
 
         txtSenhaCadastro.setBackground(new java.awt.Color(204, 204, 204));
-        txtSenhaCadastro.setText("jPasswordField1");
 
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Senha");
@@ -228,6 +260,8 @@ public class CadastroJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeActionPerformed
@@ -238,10 +272,23 @@ public class CadastroJFrame extends javax.swing.JFrame {
 
     private void btnIrParaLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrParaLoginActionPerformed
         LoginJFrame telaLogin = new LoginJFrame();
-        telaLogin.setVisible(true);
-        this.dispose();
+    
+    
+    if (this.controller != null) {
+        telaLogin.setController(this.controller);
+    }
+    
+    telaLogin.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnIrParaLoginActionPerformed
 
+    private void btnFinalizarCadastroActionPerformed(java.awt.event.ActionEvent evt) {
+    if (this.controller != null) {
+        this.controller.cadastrarUsuario(); // O Controller vai ler os Getters e salvar no banco
+    } else {
+        JOptionPane.showMessageDialog(this, "Erro: Controller não configurado.");
+        }
+    }
     /**
      * @param args the command line arguments
      */
