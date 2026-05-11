@@ -11,20 +11,15 @@ package br.edu.fei.model;
 public class Usuario {
     private int id;
     private String nome;
-    private String sobrenome;
-    private String dataNascimento;
-    private String cpf;
+    
     private String email;
-    private String nomeUsuario;
+    private String usuario;
     private String senha;
 
-    public Usuario(String nome, String sobrenome, String dataNascimento, String cpf, String email, String nomeUsuario, String senha) {
+    public Usuario(String nome, String email, String usuario, String senha) {
         this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.dataNascimento = dataNascimento;
-        this.cpf = cpf;
         this.email = email;
-        this.nomeUsuario = nomeUsuario;
+        this.usuario = usuario;
         this.senha = senha;
     }
 
@@ -44,30 +39,6 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
-
-    public String getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -76,12 +47,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getSenha() {

@@ -4,7 +4,7 @@
  */
 package br.edu.fei.view;
 
-import br.edu.fei.controller.Controller;
+import br.edu.fei.controller.CadastroController;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class LoginJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
-    private Controller controller;
+    private CadastroController controller;
     /**
      * Creates new form LoginJFrame
      */
@@ -30,7 +30,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
-    public void setController(Controller controller) {
+    public void setController(CadastroController controller) {
         this.controller = controller;
     }
 
@@ -54,11 +54,11 @@ public class LoginJFrame extends javax.swing.JFrame {
     
     private void btnEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {                                               
     // A tela apenas avisa o Controller que o botão foi clicado
-    if (this.controller != null) {
+        if (this.controller != null) {
         this.controller.autenticar(); 
-    } else {
+        } else {
         System.out.println("Erro: Controller não foi inicializado na LoginJFrame.");
-    }
+        }
     }                    
     
     
@@ -76,7 +76,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     
     telaCadastro.setVisible(true);
     this.dispose();
-}
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

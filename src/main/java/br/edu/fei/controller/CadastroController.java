@@ -4,14 +4,10 @@
  */
 package br.edu.fei.controller;
 
-import br.edu.fei.view.LoginJFrame;
-import br.edu.fei.view.CadastroJFrame;
 import br.edu.fei.model.Usuario;
 import br.edu.fei.model.dao.UsuarioDAO;
 import br.edu.fei.model.dao.Conexao;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import br.edu.fei.view.CadastroJFrame;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -19,24 +15,23 @@ import javax.swing.JOptionPane;
  *
  * @author kamil
  */
-public class Controller {
+public class CadastroController {
     private CadastroJFrame cadastroView;
-    private UsuarioDAO alunoDAO;
+    private UsuarioDAO usuarioDAO;
 
-    public Controller(CadastroJFrame cadastroView) throws SQLException {
+    public CadastroController(CadastroJFrame cadastroView) throws SQLException {
         this.cadastroView = cadastroView;
         Conexao conexao = new Conexao();
-        this.alunoDAO = new UsuarioDAO(conexao.getConnection());
+        this.UsuarioDAO = new UsuarioDAO(conexao.getConnection());
     }
     
     public void inserir(){
-        String nome = this.cadastroView.getTfNome(); 
-        String usuario = this.cadastroView.getTfUsuarioCadastro(); 
-        String senha = this.cadastroView.getTfSenha(); 
-
-        Usuario aluno = new Usuario(nome, usuario, senha);
+        String nome = this.cadastroView.getTfNome().getText();
+        String usuario = this.cadastroView.getTfUsuario().getText();
+        String senha = this.cadastroView.getTfSenha().getText();
+        Usuario usuario = new Usuario(nome, usuario, senha);
         try{
-            this.alunoDAO.inserir(aluno);
+            this.UsuarioDAO.inserir(usuario);
         }
         catch(SQLException e){
             e.printStackTrace();

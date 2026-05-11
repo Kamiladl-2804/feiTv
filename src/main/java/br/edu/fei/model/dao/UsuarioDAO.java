@@ -21,21 +21,12 @@ public class UsuarioDAO {
     }
     
     public void inserir(Usuario usuario) throws SQLException{
-        String sql = "INSERT INTO usuario (nome, sobrenome, data_nascimento, cpf, email, nome_usuario, senha))"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
+        String sql = "INSERT INTO usuario(nome, email, usuario, senha)"
+                + "values('"  + usuario.getNome() +"', '" 
+                + usuario.getEmail() + "', '"
+                + usuario.getUsuario() + "', '" + usuario.getSenha() + "')";
+        System.out.println(sql);
         PreparedStatement statement = conn.prepareStatement(sql);
-        
-        statement.setString(1, usuario.getNome());
-        statement.setString(2, usuario.getSobrenome());
-        statement.setString(3, usuario.getDataNascimento());
-        statement.setString(4, usuario.getCpf());
-        statement.setString(5, usuario.getEmail());
-        statement.setString(6, usuario.getNomeUsuario());
-        statement.setString(7, usuario.getSenha());
-        
-        System.out.println("Executando: " + sql);
-        
         statement.execute();
         conn.close();
     }
