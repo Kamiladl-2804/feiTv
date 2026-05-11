@@ -4,9 +4,7 @@
 
 package br.edu.fei.feiTv;
 
-import br.edu.fei.controller.CadastroController;
-import br.edu.fei.model.dao.Conexao;
-import br.edu.fei.view.LoginJFrame;
+import br.edu.fei.controller.UsuarioController;
 import br.edu.fei.view.CadastroJFrame;
 import java.sql.SQLException;
 
@@ -16,9 +14,9 @@ import java.sql.SQLException;
  */
 public class feiTv {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException{
         CadastroJFrame cadastroView = new CadastroJFrame();
-        CadastroController controller = new CadastroController(cadastroView);
+        UsuarioController controller = new UsuarioController();
         cadastroView.setController(controller);
         cadastroView.setVisible(true);
     }
