@@ -19,7 +19,7 @@ public class Conexao {
         Connection conexao = DriverManager.getConnection(
             "jdbc:postgresql://localhost:5432/feiTv", "postgres",
                 dotenv.get("SENHA_DB"));
-        System.out.println("Conexão bem sucedida"); 
+        System.out.println("Conexao bem sucedida"); 
         return conexao;
     }
 }

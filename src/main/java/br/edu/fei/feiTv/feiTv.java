@@ -15,9 +15,16 @@ import java.sql.SQLException;
 public class feiTv {
 
     public static void main(String[] args) throws SQLException{
-        CadastroJFrame cadastroView = new CadastroJFrame();
-        UsuarioController controller = new UsuarioController();
-        cadastroView.setController(controller);
-        cadastroView.setVisible(true);
+        // Controller responsável pelo login
+        LoginController controller = new LoginController();
+
+        // Tela inicial do sistema (Login)
+        LoginJFrame loginView = new LoginJFrame();
+
+        // Injeta o controller na view
+        loginView.setController(controller);
+
+        // Abre a tela de login
+        loginView.setVisible(true);
     }
 }
