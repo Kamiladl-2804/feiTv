@@ -6,7 +6,6 @@ package br.edu.fei.view;
 
 import br.edu.fei.controller.LoginController;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author kamil
@@ -220,7 +219,11 @@ public class LoginJFrame extends javax.swing.JFrame {
         if (ok) {
             JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
 
-            // depois você pode abrir a tela principal
+            PrincipalJFrame principal =
+            new PrincipalJFrame();
+
+            principal.setVisible(true);
+
             this.dispose();
 
         } else {
