@@ -34,7 +34,9 @@ public class UsuarioDAO {
             stmt.setString(2, usuario.getEmail());
             stmt.setString(3, usuario.getSenha());
 
-            stmt.execute();
+            int linhas = stmt.executeUpdate();
+
+            System.out.println("Linhas afetadas: " + linhas);
 
             System.out.println("Usuário cadastrado!");
 

@@ -29,40 +29,13 @@ public class LoginJFrame extends javax.swing.JFrame {
 
     // --- GETTERS PARA O CONTROLLER LER A TELA ---
     public String getTfUsuario() {
-        return txtUsuarioLogin.getText();
+        return txtEmailLogin.getText();
     }
 
     public String getTfSenha() {
         return new String(txtSenhaLogin.getPassword());
     }
     
-    private void btnEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {
-
-        if (controller == null) {
-            JOptionPane.showMessageDialog(this, "Controller não inicializado!");
-            return;
-        }
-
-        if (getTfUsuario().isEmpty() || getTfSenha().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-            return;
-        }
-
-        boolean ok = controller.logar(
-                getTfUsuario(),
-                getTfSenha()
-        );
-
-        if (ok) {
-            JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
-
-            // depois você pode abrir a tela principal
-            this.dispose();
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos!");
-        }
-    }
     
     
     /**
@@ -84,7 +57,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtUsuarioLogin = new javax.swing.JTextField();
+        txtEmailLogin = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtSenhaLogin = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
@@ -123,10 +96,10 @@ public class LoginJFrame extends javax.swing.JFrame {
         jLabel1.setText("Login");
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Usuário");
+        jLabel3.setText("E-mail");
 
-        txtUsuarioLogin.setBackground(new java.awt.Color(204, 204, 204));
-        txtUsuarioLogin.addActionListener(this::txtUsuarioLoginActionPerformed);
+        txtEmailLogin.setBackground(new java.awt.Color(204, 204, 204));
+        txtEmailLogin.addActionListener(this::txtEmailLoginActionPerformed);
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Senha");
@@ -142,6 +115,7 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         btnEntrarLogin.setBackground(new java.awt.Color(241, 0, 0));
         btnEntrarLogin.setText("Logar");
+        btnEntrarLogin.addActionListener(this::btnEntrarLoginActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,11 +134,11 @@ public class LoginJFrame extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel4)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txtSenhaLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtUsuarioLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtEmailLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(49, 49, 49))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel5)
@@ -183,7 +157,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUsuarioLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmailLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -212,16 +186,47 @@ public class LoginJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUsuarioLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioLoginActionPerformed
+    private void txtEmailLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailLoginActionPerformed
         btnEntrarLoginActionPerformed(evt);
-    }//GEN-LAST:event_txtUsuarioLoginActionPerformed
+    }//GEN-LAST:event_txtEmailLoginActionPerformed
 
     private void btnIrParaCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrParaCadastroActionPerformed
-        CadastroJFrame telaCadastro = new CadastroJFrame();
+         CadastroJFrame telaCadastro = new CadastroJFrame();
 
-        telaCadastro.setVisible(true);
-        this.dispose();
+    telaCadastro.setController(
+            new br.edu.fei.controller.UsuarioController()
+    );
+
+    telaCadastro.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnIrParaCadastroActionPerformed
+
+    private void btnEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarLoginActionPerformed
+        if (controller == null) {
+            JOptionPane.showMessageDialog(this, "Controller não inicializado!");
+            return;
+        }
+
+        if (getTfUsuario().isEmpty() || getTfSenha().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+            return;
+        }
+
+        boolean ok = controller.logar(
+                getTfUsuario(),
+                getTfSenha()
+        );
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
+
+            // depois você pode abrir a tela principal
+            this.dispose();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos!");
+        }
+    }//GEN-LAST:event_btnEntrarLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,7 +254,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField txtEmailLogin;
     private javax.swing.JPasswordField txtSenhaLogin;
-    private javax.swing.JTextField txtUsuarioLogin;
     // End of variables declaration//GEN-END:variables
 }

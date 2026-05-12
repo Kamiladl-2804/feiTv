@@ -4,8 +4,8 @@
 
 package br.edu.fei.feiTv;
 
-import br.edu.fei.controller.UsuarioController;
-import br.edu.fei.view.CadastroJFrame;
+import br.edu.fei.controller.LoginController;
+import br.edu.fei.view.LoginJFrame;
 import java.sql.SQLException;
 
 /**

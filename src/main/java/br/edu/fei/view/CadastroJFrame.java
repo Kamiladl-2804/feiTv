@@ -4,6 +4,7 @@
  */
 package br.edu.fei.view;
 
+import br.edu.fei.controller.LoginController;
 import br.edu.fei.controller.UsuarioController;
 import javax.swing.JOptionPane;
 
@@ -200,9 +201,16 @@ public class CadastroJFrame extends javax.swing.JFrame {
                     "Usuário cadastrado!"
             );
 
-            txtNome.setText("");
-            txtEmail.setText("");
-            txtSenhaCadastro.setText("");
+            LoginJFrame telaLogin = new LoginJFrame();
+
+            telaLogin.setController(
+                new LoginController()
+            );
+
+            telaLogin.setVisible(true);
+
+        
+            this.dispose();
 
         } else {
 
