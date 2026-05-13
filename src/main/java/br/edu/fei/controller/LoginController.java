@@ -12,6 +12,8 @@ import br.edu.fei.model.dao.UsuarioDAO;
  * @author feispkluongo
  */
 
+
+
 public class LoginController {
 
     private UsuarioDAO dao;
@@ -20,16 +22,8 @@ public class LoginController {
         this.dao = new UsuarioDAO();
     }
 
-    public boolean logar(String email, String senha) {
-
-        Usuario usuario = dao.logar(email, senha);
-
-        if (usuario != null) {
-            System.out.println("Login OK: " + usuario.getNome());
-            return true;
-        }
-
-        System.out.println("Login inválido!");
-        return false;
+    public Usuario logar(String email, String senha) {
+        return dao.logar(email, senha);
     }
 }
+

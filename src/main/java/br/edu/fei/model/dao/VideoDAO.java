@@ -5,7 +5,7 @@ package br.edu.fei.model.dao;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import br.edu.fei.model.dao.Conexao;
+
 import br.edu.fei.model.Video;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,6 +48,51 @@ public class VideoDAO {
 
         } catch (Exception e) {
             System.out.println("Erro ao listar vídeos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+    
+    public ArrayList<Video> buscarVideosPorNome(String titulo) {
+
+        ArrayList<Video> lista = new ArrayList<>();
+
+        String sql =
+            "SELECT * FROM videos WHERE titulo ILIKE ?";
+
+        try (
+
+            Connection conn = new Conexao().getConnection();
+
+            PreparedStatement stmt =
+                    conn.prepareStatement(sql)
+
+        ) {
+
+            stmt.setString(1, "%" + titulo + "%");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                Video video = new Video();
+
+                video.setId(rs.getInt("id"));
+                video.setTitulo(rs.getString("titulo"));
+                video.setDescricao(rs.getString("descricao"));
+                video.setCategoria(rs.getString("categoria"));
+                video.setClassificacaoIndicativa(
+                        rs.getString("classificacao_indicativa")
+                );
+
+                lista.add(video);
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(
+                "Erro ao buscar vídeos: " + e.getMessage()
+            );
         }
 
         return lista;

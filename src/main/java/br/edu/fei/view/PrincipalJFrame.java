@@ -1,23 +1,66 @@
-package br.edu.fei.view;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+package br.edu.fei.view;
+
+import br.edu.fei.model.Video;
+import br.edu.fei.model.dao.VideoDAO;
+import br.edu.fei.model.dao.CurtirDAO;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author kamil
  */
 public class PrincipalJFrame extends javax.swing.JFrame {
+    private int usuarioId;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PrincipalJFrame.class.getName());
-
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+        listarVideosTela();
+    }
+    
     /**
      * Creates new form PrincipalJFrame
      */
     public PrincipalJFrame() {
         initComponents();
+        
+    }
+    
+    public void listarVideosTela() {
+
+        VideoDAO dao = new VideoDAO();
+        ArrayList<Video> lista = dao.listarVideos();
+
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblVideos.getModel();
+
+        modelo.setRowCount(0);
+
+        CurtirDAO curtidaDAO = new CurtirDAO();
+
+        for (Video video : lista) {
+
+            boolean curtiu = false;
+
+            if (usuarioId > 0) {
+                curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
+            }
+
+            modelo.addRow(new Object[]{
+                    video.getId(),
+                    video.getTitulo(),
+                    video.getDescricao(),
+                    video.getCategoria(),
+                    video.getClassificacaoIndicativa(),
+                    curtiu ? "❤️" : ""
+            });
+        }
     }
 
     /**
@@ -34,6 +77,16 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnSairPrincipal = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblVideos = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        txtBuscarVideo = new javax.swing.JTextField();
+        btnBuscarVideo = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        btnCurtir = new javax.swing.JButton();
+        btnDescurtir = new javax.swing.JButton();
+        bntIrParaListaFavoritos = new javax.swing.JButton();
+        bntAdicionarFavorito = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,7 +109,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(187, 187, 187)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addComponent(btnSairPrincipal)
                 .addContainerGap())
         );
@@ -77,14 +130,75 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Bem-Vindo!!");
 
+        tblVideos.setBackground(new java.awt.Color(153, 153, 153));
+        tblVideos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        tblVideos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Título", "Descrição", "Categoria", "Classificação", "Curtida"
+            }
+        ));
+        jScrollPane1.setViewportView(tblVideos);
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Buscar Video:");
+
+        txtBuscarVideo.setBackground(new java.awt.Color(204, 204, 204));
+
+        btnBuscarVideo.setBackground(new java.awt.Color(241, 0, 0));
+        btnBuscarVideo.setText("Buscar");
+        btnBuscarVideo.addActionListener(this::btnBuscarVideoActionPerformed);
+
+        jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Selecione o video para curtir:");
+
+        btnCurtir.setText("Curtir");
+        btnCurtir.addActionListener(this::btnCurtirActionPerformed);
+
+        btnDescurtir.setText("Descurtir");
+        btnDescurtir.addActionListener(this::btnDescurtirActionPerformed);
+
+        bntIrParaListaFavoritos.setText("Lista de Favoritos");
+        bntIrParaListaFavoritos.addActionListener(this::bntIrParaListaFavoritosActionPerformed);
+
+        bntAdicionarFavorito.setText("Adicionar Favorito");
+        bntAdicionarFavorito.addActionListener(this::bntAdicionarFavoritoActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(179, 179, 179)
-                .addComponent(jLabel2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(bntIrParaListaFavoritos))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCurtir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(bntAdicionarFavorito)
+                                    .addComponent(btnDescurtir)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -93,18 +207,41 @@ public class PrincipalJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addGap(0, 311, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(btnBuscarVideo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCurtir)
+                        .addComponent(btnDescurtir)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bntAdicionarFavorito)
+                    .addComponent(bntIrParaListaFavoritos))
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -122,6 +259,120 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnSairPrincipalActionPerformed
 
+    private void btnBuscarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVideoActionPerformed
+        String titulo = txtBuscarVideo.getText();
+
+        VideoDAO dao = new VideoDAO();
+        ArrayList<Video> lista = dao.buscarVideosPorNome(titulo);
+
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblVideos.getModel();
+
+        modelo.setRowCount(0);
+
+        CurtirDAO curtidaDAO = new CurtirDAO();
+
+        for (Video video : lista) {
+
+            boolean curtiu = false;
+
+            if (usuarioId > 0) {
+                curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
+            }
+
+            modelo.addRow(new Object[]{
+                    video.getId(),
+                    video.getTitulo(),
+                    video.getDescricao(),
+                    video.getCategoria(),
+                    video.getClassificacaoIndicativa(),
+                    curtiu ? "❤️" : ""
+                });
+        }
+    }//GEN-LAST:event_btnBuscarVideoActionPerformed
+
+    private void btnCurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurtirActionPerformed
+        int linha = tblVideos.getSelectedRow();
+
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
+            return;
+        }
+
+        int videoId = (int) tblVideos.getValueAt(linha, 0);
+
+        CurtirDAO dao = new CurtirDAO();
+        dao.curtirVideo(usuarioId, videoId);
+
+        listarVideosTela();
+    }//GEN-LAST:event_btnCurtirActionPerformed
+
+    private void btnDescurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescurtirActionPerformed
+        int linha = tblVideos.getSelectedRow();
+
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
+            return;
+        }
+
+        int videoId = (int) tblVideos.getValueAt(linha, 0);
+
+        CurtirDAO dao = new CurtirDAO();
+        dao.descurtirVideo(usuarioId, videoId);
+
+        listarVideosTela();
+    }//GEN-LAST:event_btnDescurtirActionPerformed
+
+    private void bntIrParaListaFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaListaFavoritosActionPerformed
+        if (usuarioId <= 0) {
+        JOptionPane.showMessageDialog(this, "Usuário inválido. Faça login novamente.");
+        return;
+        }
+
+        FavoritosJFrame tela = new FavoritosJFrame();
+
+        tela.setUsuarioId(usuarioId);
+
+        tela.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_bntIrParaListaFavoritosActionPerformed
+
+    private void bntAdicionarFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAdicionarFavoritoActionPerformed
+        int linha = tblVideos.getSelectedRow();
+
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
+            return;
+        }
+
+        int videoId = (int) tblVideos.getValueAt(linha, 0);
+
+        if (usuarioId <= 0) {
+            JOptionPane.showMessageDialog(this, "Usuário inválido!");
+            return;
+        }
+
+        FavoritosDAO dao = new FavoritosDAO();
+
+        // 🔥 opcional (mas recomendado): evitar duplicado
+        List<Video> favoritos = dao.listarFavoritos(usuarioId);
+
+        for (Video v : favoritos) {
+            if (v.getId() == videoId) {
+                JOptionPane.showMessageDialog(this, "Esse vídeo já está nos favoritos!");
+                return;
+            }
+        }
+
+        // 🔥 aqui é o ponto principal
+        dao.adicionarVideo(usuarioId, videoId);
+
+        JOptionPane.showMessageDialog(this, "Adicionado aos favoritos!");
+
+        listarVideosTela();
+    }//GEN-LAST:event_bntAdicionarFavoritoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -131,27 +382,31 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        java.awt.EventQueue.invokeLater(() -> {
+        PrincipalJFrame tela = new PrincipalJFrame();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new PrincipalJFrame().setVisible(true));
-    }
+        // ❗ NÃO define usuário aqui
+        // quem define é o LoginJFrame após autenticação
+
+        tela.setVisible(true);
+        });
+        /* Create and display the form */    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bntAdicionarFavorito;
+    private javax.swing.JButton bntIrParaListaFavoritos;
+    private javax.swing.JButton btnBuscarVideo;
+    private javax.swing.JButton btnCurtir;
+    private javax.swing.JButton btnDescurtir;
     private javax.swing.JButton btnSairPrincipal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblVideos;
+    private javax.swing.JTextField txtBuscarVideo;
     // End of variables declaration//GEN-END:variables
 }

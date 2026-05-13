@@ -5,6 +5,7 @@
 package br.edu.fei.view;
 
 import br.edu.fei.controller.LoginController;
+import br.edu.fei.model.Usuario;
 import javax.swing.JOptionPane;
 /**
  *
@@ -192,12 +193,11 @@ public class LoginJFrame extends javax.swing.JFrame {
     private void btnIrParaCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrParaCadastroActionPerformed
          CadastroJFrame telaCadastro = new CadastroJFrame();
 
-    telaCadastro.setController(
-            new br.edu.fei.controller.UsuarioController()
-    );
+        telaCadastro.setController(
+            new br.edu.fei.controller.UsuarioController());
 
-    telaCadastro.setVisible(true);
-    this.dispose();
+        telaCadastro.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnIrParaCadastroActionPerformed
 
     private void btnEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarLoginActionPerformed
@@ -211,23 +211,29 @@ public class LoginJFrame extends javax.swing.JFrame {
             return;
         }
 
-        boolean ok = controller.logar(
+        Usuario usuario = controller.logar(
                 getTfUsuario(),
                 getTfSenha()
         );
 
-        if (ok) {
-            JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
+        if (usuario != null) {
 
-            PrincipalJFrame principal =
-            new PrincipalJFrame();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Login realizado com sucesso!"
+            );
 
+            PrincipalJFrame principal = new PrincipalJFrame();
+            principal.setUsuarioId(usuario.getId());
             principal.setVisible(true);
 
             this.dispose();
 
         } else {
-            JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos!");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Usuário ou senha inválidos!"
+            );
         }
     }//GEN-LAST:event_btnEntrarLoginActionPerformed
 
@@ -239,10 +245,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
 
             LoginJFrame tela = new LoginJFrame();
-
-            LoginController controller = new LoginController();
-            tela.setController(controller);
-
+            tela.setController(new LoginController());
             tela.setVisible(true);
         });
     }
