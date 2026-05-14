@@ -11,6 +11,7 @@ import java.sql.SQLException;
 /**
  *
  * @author kamil
+ * Responsável por iniciar o programa mostrando a primeira tela que é login
  */
 public class feiTv {
 
@@ -18,10 +19,10 @@ public class feiTv {
         // Controller responsável pelo login
         LoginController controller = new LoginController();
 
-        // Tela inicial do sistema (Login)
+        // Tela inicial do programa
         LoginJFrame loginView = new LoginJFrame();
 
-        // Injeta o controller na view
+        // Chama o controller
         loginView.setController(controller);
 
         // Abre a tela de login

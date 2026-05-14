@@ -9,21 +9,24 @@ import br.edu.fei.model.dao.UsuarioDAO;
 
 /**
  *
- * @author feispkluongo
+ * @author Kamila
+ * 
+ * Controller responsavel pelo login
+ * 
  */
-
-
 
 public class LoginController {
 
-    private UsuarioDAO dao;
+    private final UsuarioDAO dao;//DAO presponsável pelo login e cadastro
 
-    public LoginController() {
-        this.dao = new UsuarioDAO();
-    }
+    /**
+     * Construtor do Controller
+     * Inicializa o DAO de favoritos.
+     */
+    public LoginController() {this.dao = new UsuarioDAO();}
 
+    //Faz login do usuario por e-mail e senha
     public Usuario logar(String email, String senha) {
-        return dao.logar(email, senha);
-    }
+        return dao.logar(email, senha);}
 }
 

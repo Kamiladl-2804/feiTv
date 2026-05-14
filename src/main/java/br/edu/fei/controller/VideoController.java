@@ -8,21 +8,25 @@ import br.edu.fei.model.dao.CurtirDAO;
 
 /**
  *
- * @author kamil
+ * @author kamila
+ * Controller responsável por gerenciar as regras relacionadas aos videos.
  */
 public class VideoController {
-    private CurtirDAO dao;
-
+    private final CurtirDAO dao; //DAO que cuida de curtidas
+    
+    //Construtor do controller. Usa o DAO de curtidas
     public VideoController() {
 
         dao = new CurtirDAO();
     }
 
+    //Marca como curtido
     public void curtirVideo(int usuarioId, int videoId) {
 
         dao.curtirVideo(usuarioId, videoId);
     }
 
+    //Remove curtida
     public void descurtirVideo(int usuarioId, int videoId) {
 
         dao.descurtirVideo(usuarioId, videoId);
