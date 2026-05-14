@@ -54,6 +54,7 @@ public class CadastroJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        btntIrParaLogin = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -76,21 +77,32 @@ public class CadastroJFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(241, 0, 0));
         jLabel1.setText("feiTv");
 
+        btntIrParaLogin.setBackground(new java.awt.Color(241, 0, 0));
+        btntIrParaLogin.setText("Voltar");
+        btntIrParaLogin.addActionListener(this::btntIrParaLoginActionPerformed);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(228, 228, 228)
+                .addContainerGap()
+                .addComponent(btntIrParaLogin)
+                .addGap(147, 147, 147)
                 .addComponent(jLabel1)
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(btntIrParaLogin)
+                        .addGap(21, 21, 21))))
         );
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -221,6 +233,18 @@ public class CadastroJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnFinalizarCadastroActionPerformed
 
+    private void btntIrParaLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntIrParaLoginActionPerformed
+        LoginJFrame tela = new LoginJFrame();
+
+        tela.setController(
+            new br.edu.fei.controller.LoginController()
+        );
+
+        tela.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_btntIrParaLoginActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -270,6 +294,7 @@ public class CadastroJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFinalizarCadastro;
+    private javax.swing.JButton btntIrParaLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

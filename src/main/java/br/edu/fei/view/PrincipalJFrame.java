@@ -7,7 +7,9 @@ package br.edu.fei.view;
 import br.edu.fei.model.Video;
 import br.edu.fei.model.dao.VideoDAO;
 import br.edu.fei.model.dao.CurtirDAO;
+import br.edu.fei.model.dao.FavoritosDAO;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -29,7 +31,12 @@ public class PrincipalJFrame extends javax.swing.JFrame {
      */
     public PrincipalJFrame() {
         initComponents();
-        
+        tblVideos.getColumnModel().getColumn(0).setMinWidth(0);
+        tblVideos.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblVideos.getColumnModel().getColumn(0).setWidth(0);
+        tblVideos.setFillsViewportHeight(true);
+        jScrollPane1.setVerticalScrollBarPolicy(
+        javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }
     
     public void listarVideosTela() {
@@ -52,6 +59,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
                 curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
             }
 
+            
             modelo.addRow(new Object[]{
                     video.getId(),
                     video.getTitulo(),
@@ -89,8 +97,10 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         bntAdicionarFavorito = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 511));
 
         jPanel1.setBackground(new java.awt.Color(91, 91, 88));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 511));
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -107,23 +117,23 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(187, 187, 187)
+                .addGap(415, 415, 415)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSairPrincipal)
-                .addContainerGap())
+                .addGap(28, 28, 28))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addContainerGap())
+                        .addGap(17, 17, 17))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnSairPrincipal)
-                        .addGap(19, 19, 19))))
+                        .addGap(32, 32, 32))))
         );
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
@@ -140,13 +150,35 @@ public class PrincipalJFrame extends javax.swing.JFrame {
                 "ID", "Título", "Descrição", "Categoria", "Classificação", "Curtida"
             }
         ));
+        tblVideos.setPreferredSize(new java.awt.Dimension(10000, 100000));
         jScrollPane1.setViewportView(tblVideos);
+        if (tblVideos.getColumnModel().getColumnCount() > 0) {
+            tblVideos.getColumnModel().getColumn(0).setMinWidth(2);
+            tblVideos.getColumnModel().getColumn(0).setPreferredWidth(2);
+            tblVideos.getColumnModel().getColumn(0).setMaxWidth(2);
+            tblVideos.getColumnModel().getColumn(1).setMinWidth(200);
+            tblVideos.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tblVideos.getColumnModel().getColumn(1).setMaxWidth(200);
+            tblVideos.getColumnModel().getColumn(2).setMinWidth(500);
+            tblVideos.getColumnModel().getColumn(2).setPreferredWidth(500);
+            tblVideos.getColumnModel().getColumn(2).setMaxWidth(500);
+            tblVideos.getColumnModel().getColumn(3).setMinWidth(90);
+            tblVideos.getColumnModel().getColumn(3).setPreferredWidth(90);
+            tblVideos.getColumnModel().getColumn(3).setMaxWidth(90);
+            tblVideos.getColumnModel().getColumn(4).setMinWidth(80);
+            tblVideos.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tblVideos.getColumnModel().getColumn(4).setMaxWidth(80);
+            tblVideos.getColumnModel().getColumn(5).setMinWidth(50);
+            tblVideos.getColumnModel().getColumn(5).setPreferredWidth(50);
+            tblVideos.getColumnModel().getColumn(5).setMaxWidth(50);
+        }
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Buscar Video:");
 
         txtBuscarVideo.setBackground(new java.awt.Color(204, 204, 204));
+        txtBuscarVideo.addActionListener(this::txtBuscarVideoActionPerformed);
 
         btnBuscarVideo.setBackground(new java.awt.Color(241, 0, 0));
         btnBuscarVideo.setText("Buscar");
@@ -154,7 +186,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Selecione o video para curtir:");
+        jLabel4.setText("Selecione o video para curtir/descurtir:");
 
         btnCurtir.setText("Curtir");
         btnCurtir.addActionListener(this::btnCurtirActionPerformed);
@@ -162,9 +194,11 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         btnDescurtir.setText("Descurtir");
         btnDescurtir.addActionListener(this::btnDescurtirActionPerformed);
 
+        bntIrParaListaFavoritos.setBackground(new java.awt.Color(241, 0, 0));
         bntIrParaListaFavoritos.setText("Lista de Favoritos");
         bntIrParaListaFavoritos.addActionListener(this::bntIrParaListaFavoritosActionPerformed);
 
+        bntAdicionarFavorito.setBackground(new java.awt.Color(241, 0, 0));
         bntAdicionarFavorito.setText("Adicionar Favorito");
         bntAdicionarFavorito.addActionListener(this::bntAdicionarFavoritoActionPerformed);
 
@@ -174,57 +208,64 @@ public class PrincipalJFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(422, 422, 422)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(bntIrParaListaFavoritos))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCurtir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(bntAdicionarFavorito)
-                                    .addComponent(btnDescurtir)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBuscarVideo)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(bntIrParaListaFavoritos)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCurtir)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(btnDescurtir)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bntAdicionarFavorito)
+                                .addGap(186, 186, 186))))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(46, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 918, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(btnBuscarVideo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCurtir)
                         .addComponent(btnDescurtir)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bntAdicionarFavorito)
-                    .addComponent(bntIrParaListaFavoritos))
-                .addGap(20, 20, 20))
+                    .addComponent(bntIrParaListaFavoritos)
+                    .addComponent(bntAdicionarFavorito))
+                .addGap(44, 44, 44))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -232,16 +273,12 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
         );
 
         pack();
@@ -279,6 +316,8 @@ public class PrincipalJFrame extends javax.swing.JFrame {
             if (usuarioId > 0) {
                 curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
             }
+            
+            
 
             modelo.addRow(new Object[]{
                     video.getId(),
@@ -325,8 +364,25 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
     private void bntIrParaListaFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaListaFavoritosActionPerformed
         if (usuarioId <= 0) {
-        JOptionPane.showMessageDialog(this, "Usuário inválido. Faça login novamente.");
-        return;
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Usuário inválido. Faça login novamente."
+            );
+
+            return;
+        }
+
+        FavoritosDAO dao = new FavoritosDAO();
+
+        System.out.println(dao.existeLista(usuarioId));
+        
+        if (!dao.existeLista(usuarioId)) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Você ainda não possui lista de favoritos."
+                + "Adicione um vídeo para criar sua lista.");
+                return;
         }
 
         FavoritosJFrame tela = new FavoritosJFrame();
@@ -355,23 +411,31 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         FavoritosDAO dao = new FavoritosDAO();
 
-        // 🔥 opcional (mas recomendado): evitar duplicado
+        if (!dao.existeLista(usuarioId)) {
+
+            dao.criarLista(usuarioId);
+        }
+        
         List<Video> favoritos = dao.listarFavoritos(usuarioId);
 
-        for (Video v : favoritos) {
-            if (v.getId() == videoId) {
+        for (Video video : favoritos) {
+            if (video.getId() == videoId) {
                 JOptionPane.showMessageDialog(this, "Esse vídeo já está nos favoritos!");
                 return;
             }
         }
-
-        // 🔥 aqui é o ponto principal
+        
+        
         dao.adicionarVideo(usuarioId, videoId);
 
         JOptionPane.showMessageDialog(this, "Adicionado aos favoritos!");
 
         listarVideosTela();
     }//GEN-LAST:event_bntAdicionarFavoritoActionPerformed
+
+    private void txtBuscarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarVideoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarVideoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,10 +448,8 @@ public class PrincipalJFrame extends javax.swing.JFrame {
          */
         java.awt.EventQueue.invokeLater(() -> {
         PrincipalJFrame tela = new PrincipalJFrame();
-
-        // ❗ NÃO define usuário aqui
-        // quem define é o LoginJFrame após autenticação
-
+        
+        //nao
         tela.setVisible(true);
         });
         /* Create and display the form */    }

@@ -12,7 +12,7 @@ import java.util.List;
  * @author kamil
  */
 public class FavoritosController {
-    private FavoritosDAO dao;
+    private final FavoritosDAO dao;
 
     public FavoritosController() {
         this.dao = new FavoritosDAO();

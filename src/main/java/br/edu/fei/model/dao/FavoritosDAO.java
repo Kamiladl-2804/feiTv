@@ -4,6 +4,7 @@
  */
 package br.edu.fei.model.dao;
 
+import java.sql.SQLException;
 import br.edu.fei.model.Video;
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,10 +14,17 @@ import java.util.List;
  * @author kamil
  */
 public class FavoritosDAO {
-   private Connection conn;
+   private final Connection conn;
 
     public FavoritosDAO() {
-        this.conn = Conexao.getConexao();
+        try {
+
+            this.conn = new Conexao().getConnection();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean existeLista(int usuarioId) {

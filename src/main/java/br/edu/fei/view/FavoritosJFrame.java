@@ -4,12 +4,18 @@
  */
 package br.edu.fei.view;
 
+import br.edu.fei.model.Video;
+import br.edu.fei.model.dao.CurtirDAO;
+import br.edu.fei.model.dao.FavoritosDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author kamil
  */
 public class FavoritosJFrame extends javax.swing.JFrame {
-    
+    private int usuarioId;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FavoritosJFrame.class.getName());
 
     /**
@@ -17,8 +23,47 @@ public class FavoritosJFrame extends javax.swing.JFrame {
      */
     public FavoritosJFrame() {
         initComponents();
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setWidth(0);
     }
 
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+        listarFavoritos();
+    }
+    
+    public void listarFavoritos() {
+
+        FavoritosDAO dao = new FavoritosDAO();
+
+        List<Video> lista = dao.listarFavoritos(usuarioId);
+
+        DefaultTableModel modelo =
+            (DefaultTableModel) jTable1.getModel();
+
+        modelo.setRowCount(0);
+
+        CurtirDAO curtidaDAO = new CurtirDAO();
+
+        for (Video video : lista) {
+
+            boolean curtiu = false;
+
+            if (usuarioId > 0) {
+                curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
+            }
+
+            modelo.addRow(new Object[]{
+                video.getId(),
+                video.getTitulo(),
+                video.getDescricao(),
+                video.getCategoria(),
+                video.getClassificacaoIndicativa(),
+                curtiu ? "❤️" : ""
+            });
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,6 +76,8 @@ public class FavoritosJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        bntIrParaPrincipal = new javax.swing.JButton();
+        btnSairFavoritos = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -40,6 +87,7 @@ public class FavoritosJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(91, 91, 88));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 511));
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -47,20 +95,35 @@ public class FavoritosJFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(241, 0, 0));
         jLabel1.setText("feiTv");
 
+        bntIrParaPrincipal.setBackground(new java.awt.Color(241, 0, 0));
+        bntIrParaPrincipal.setText("Voltar");
+        bntIrParaPrincipal.addActionListener(this::bntIrParaPrincipalActionPerformed);
+
+        btnSairFavoritos.setBackground(new java.awt.Color(241, 0, 0));
+        btnSairFavoritos.setText("Sair");
+        btnSairFavoritos.addActionListener(this::btnSairFavoritosActionPerformed);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
+                .addComponent(bntIrParaPrincipal)
+                .addGap(343, 343, 343)
                 .addComponent(jLabel1)
-                .addGap(177, 177, 177))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSairFavoritos)
+                .addGap(39, 39, 39))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(bntIrParaPrincipal)
+                    .addComponent(btnSairFavoritos))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -68,22 +131,45 @@ public class FavoritosJFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Lista de Favoritos");
 
+        jTable1.setBackground(new java.awt.Color(153, 153, 153));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Título", "Descrição", "Categoria", "Classificação", "Curtida"
             }
         ));
+        jTable1.setPreferredSize(new java.awt.Dimension(1000, 511));
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(2);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(2);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(2);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(200);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(200);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(500);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(500);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(500);
+            jTable1.getColumnModel().getColumn(3).setMinWidth(90);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(3).setMaxWidth(90);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(80);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(80);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(80);
+            jTable1.getColumnModel().getColumn(5).setMinWidth(50);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(5).setMaxWidth(50);
+        }
 
+        bntExcluirListaFavorito.setBackground(new java.awt.Color(241, 0, 0));
         bntExcluirListaFavorito.setText("Excluir lista");
+        bntExcluirListaFavorito.addActionListener(this::bntExcluirListaFavoritoActionPerformed);
 
+        bntExcluirVideoDaListaFavorito.setBackground(new java.awt.Color(241, 0, 0));
         bntExcluirVideoDaListaFavorito.setText("Excluir Video");
+        bntExcluirVideoDaListaFavorito.addActionListener(this::bntExcluirVideoDaListaFavoritoActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,19 +177,20 @@ public class FavoritosJFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(145, 145, 145))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
+                .addGap(226, 226, 226)
                 .addComponent(bntExcluirListaFavorito)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(bntExcluirVideoDaListaFavorito)
-                .addGap(66, 66, 66))
+                .addGap(200, 200, 200))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(412, 412, 412)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,34 +198,87 @@ public class FavoritosJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(109, 109, 109)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bntExcluirListaFavorito)
-                    .addComponent(bntExcluirVideoDaListaFavorito))
-                .addContainerGap(44, Short.MAX_VALUE))
+                    .addComponent(bntExcluirVideoDaListaFavorito)
+                    .addComponent(bntExcluirListaFavorito))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bntExcluirVideoDaListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirVideoDaListaFavoritoActionPerformed
+        int linha = jTable1.getSelectedRow();
+
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
+                return;
+            }
+
+            int videoId = (int) jTable1.getValueAt(linha, 0);
+
+            FavoritosDAO dao = new FavoritosDAO();
+            dao.removerVideo(usuarioId, videoId);
+
+            JOptionPane.showMessageDialog(this, "Removido dos favoritos!");
+
+            listarFavoritos();
+    }//GEN-LAST:event_bntExcluirVideoDaListaFavoritoActionPerformed
+
+    private void bntExcluirListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirListaFavoritoActionPerformed
+         int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Deseja realmente excluir toda a lista?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                FavoritosDAO dao = new FavoritosDAO();
+                dao.excluirLista(usuarioId);
+
+                JOptionPane.showMessageDialog(this, "Lista excluída!");
+
+                listarFavoritos();
+            }
+    }//GEN-LAST:event_bntExcluirListaFavoritoActionPerformed
+
+    private void bntIrParaPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaPrincipalActionPerformed
+        PrincipalJFrame tela = new PrincipalJFrame();
+
+        tela.setUsuarioId(usuarioId);
+
+        tela.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_bntIrParaPrincipalActionPerformed
+
+    private void btnSairFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairFavoritosActionPerformed
+        LoginJFrame login = new LoginJFrame();
+
+        login.setController(
+            new br.edu.fei.controller.LoginController()
+        );
+
+        login.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_btnSairFavoritosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,6 +308,8 @@ public class FavoritosJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntExcluirListaFavorito;
     private javax.swing.JButton bntExcluirVideoDaListaFavorito;
+    private javax.swing.JButton bntIrParaPrincipal;
+    private javax.swing.JButton btnSairFavoritos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
