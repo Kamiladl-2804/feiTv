@@ -109,6 +109,9 @@ src
     ├── LoginJFrame
     └── PrincipalJFrame
 ```
+## Diagrama do Projeto
+
+![Diagrama](Diagrama.png)
 
 ## Video de apresentação
 [Assistir apresentação do projeto](https://drive.google.com/file/d/1SGpnqFGKTYbRuM3TXlvkjfEJk87sNeEV/view?usp=drive_link)
