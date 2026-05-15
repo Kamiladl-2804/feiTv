@@ -1,23 +1,27 @@
+-- Criação do banco de dados
+
+-- Criação da tabela de usuários
 CREATE TABLE usuarios (
 
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY, -- Chave primária 
 
-    nome VARCHAR(100),
+    nome VARCHAR(100), -- Nome do usuário
 
-    email VARCHAR(100) UNIQUE,
+    email VARCHAR(100) UNIQUE, -- Email do usuário unico
 
-    senha VARCHAR(100)
+    senha VARCHAR(100) -- Senha do usuário
 
 );
-
+-- Criação da tabela de vídeos
 CREATE TABLE videos (
-    id SERIAL PRIMARY KEY,
-    titulo VARCHAR(150) NOT NULL,
-    descricao TEXT NOT NULL,
-    categoria VARCHAR(100) NOT NULL,
-    classificacao_indicativa VARCHAR(10) NOT NULL
+    id SERIAL PRIMARY KEY, -- Chave primária
+    titulo VARCHAR(150) NOT NULL, -- Título do vídeo
+    descricao TEXT NOT NULL, -- Descrição do vídeo
+    categoria VARCHAR(100) NOT NULL, -- Categoria do vídeo
+    classificacao_indicativa VARCHAR(10) NOT NULL -- Classificação indicativa(idade)
 );
 
+--Colocar os dados da tabela de vídeos
 INSERT INTO videos
 (titulo, descricao, categoria, classificacao_indicativa)
 VALUES
@@ -378,31 +382,34 @@ VALUES
 '14'
 );
 
+-- Criação da tabela de curtidas
 CREATE TABLE curtidas (
 
-    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
-    video_id INTEGER REFERENCES videos(id) ON DELETE CASCADE,
+    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE, -- Chave estrangeira pega da tabela de usuários
+    video_id INTEGER REFERENCES videos(id) ON DELETE CASCADE, -- Chave estrangeira pega da tabela de vídeos
 
-    PRIMARY KEY (usuario_id, video_id)
+    PRIMARY KEY (usuario_id, video_id) -- Chave primária composta, para garantir que se um é excluido o outro também seja excluido
 
 );
 
+-- Criação da tabela de favoritos
 CREATE TABLE favoritos (
-    id SERIAL PRIMARY KEY,
-    usuario_id INT NOT NULL UNIQUE,
+    id SERIAL PRIMARY KEY,-- Chave primária
+    usuario_id INT NOT NULL UNIQUE,-- Chave estrangeira pega da tabela de usuários, e é unico para garantir que cada usuário tenha apenas um favorito
 
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-    ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) -- Chave estrangeira pega da tabela de usuários
+    ON DELETE CASCADE-- para garantir que se um usuário for excluido, seu favorito também seja excluido
 );
 
+-- Criação da tabela de favoritos_video
 CREATE TABLE favoritos_video (
-    id SERIAL PRIMARY KEY,
-    favorito_id INT NOT NULL,
-    video_id INT NOT NULL,
+    id SERIAL PRIMARY KEY,-- Chave primária
+    favorito_id INT NOT NULL,-- Chave estrangeira pega da tabela de favoritos
+    video_id INT NOT NULL,-- Chave estrangeira pega da tabela de vídeos
 
-    FOREIGN KEY (favorito_id) REFERENCES favoritos(id)
-    ON DELETE CASCADE,
+    FOREIGN KEY (favorito_id) REFERENCES favoritos(id)-- Chave estrangeira pega da tabela de favoritos
+    ON DELETE CASCADE,-- para garantir que se um favorito for excluido, seus videos favoritos também sejam excluidos
 
-    FOREIGN KEY (video_id) REFERENCES videos(id)
-    ON DELETE CASCADE
+    FOREIGN KEY (video_id) REFERENCES videos(id)-- Chave estrangeira pega da tabela de vídeos
+    ON DELETE CASCADE-- para garantir que se um video for excluido, ele seja excluido dos favoritos de todos os usuários
 );
