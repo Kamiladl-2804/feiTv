@@ -12,27 +12,31 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
- * @author kamil
+ * @author kamil 
+ * tela para favoridos
  */
 public class FavoritosJFrame extends javax.swing.JFrame {
-    private int usuarioId;
+    private int usuarioId;//puxa por usuario
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FavoritosJFrame.class.getName());
-
+  
     /**
      * Creates new form FavoritosJFrame
      */
     public FavoritosJFrame() {
-        initComponents();
+        initComponents();//componentes
+        setLocationRelativeTo(null); //centraliza
+        //apagar a coluna de id
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setWidth(0);
     }
-
+    //set usuario
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
         listarFavoritos();
     }
     
+    //config de de lista de favoritos que carrega até a curtida 
     public void listarFavoritos() {
 
         FavoritosDAO dao = new FavoritosDAO();
@@ -220,7 +224,7 @@ public class FavoritosJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //excluir o video da lista 
     private void bntExcluirVideoDaListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirVideoDaListaFavoritoActionPerformed
         int linha = jTable1.getSelectedRow();
 
@@ -238,7 +242,7 @@ public class FavoritosJFrame extends javax.swing.JFrame {
 
             listarFavoritos();
     }//GEN-LAST:event_bntExcluirVideoDaListaFavoritoActionPerformed
-
+    //excluir a lista por completo
     private void bntExcluirListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirListaFavoritoActionPerformed
          int confirm = JOptionPane.showConfirmDialog(
                 this,
@@ -257,7 +261,7 @@ public class FavoritosJFrame extends javax.swing.JFrame {
                 listarFavoritos();
             }
     }//GEN-LAST:event_bntExcluirListaFavoritoActionPerformed
-
+    //voltar para tela principal
     private void bntIrParaPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaPrincipalActionPerformed
         PrincipalJFrame tela = new PrincipalJFrame();
 
@@ -267,7 +271,7 @@ public class FavoritosJFrame extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_bntIrParaPrincipalActionPerformed
-
+    //sair do programa
     private void btnSairFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairFavoritosActionPerformed
         LoginJFrame login = new LoginJFrame();
 

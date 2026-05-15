@@ -11,25 +11,26 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author kamil
+ * tela para cadastro do usuario
  */
 public class CadastroJFrame extends javax.swing.JFrame {
-    
+    // Logger do programa
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CadastroJFrame.class.getName());
-    private UsuarioController controller;
+    private UsuarioController controller; //controler para cadastrar usuario
 
     /**
      * Creates new form CadastroJFrame
      */
     public CadastroJFrame() {
-        initComponents();
-        setLocationRelativeTo(null);
+        initComponents(); //componentes da tela
+        setLocationRelativeTo(null); //centraliza a tela
     }
 
-    
+    //set controler
     public void setController(UsuarioController controller) {
         this.controller = controller;
     }
-    
+    //get dados de cadastro
     public String getTfNome() {
         return txtNome.getText();
     }
@@ -198,7 +199,7 @@ public class CadastroJFrame extends javax.swing.JFrame {
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeActionPerformed
-
+    //botão cadastrar com as mensagens
     private void btnFinalizarCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarCadastroActionPerformed
         if (this.controller != null) {
 
@@ -232,7 +233,7 @@ public class CadastroJFrame extends javax.swing.JFrame {
             );
         }
     }//GEN-LAST:event_btnFinalizarCadastroActionPerformed
-
+    //botão que volta para a primeira tela
     private void btntIrParaLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntIrParaLoginActionPerformed
         LoginJFrame tela = new LoginJFrame();
 

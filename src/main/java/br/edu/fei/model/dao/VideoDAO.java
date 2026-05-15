@@ -14,11 +14,12 @@ import java.util.ArrayList;
 /**
  *
  * @author feispkluongo
+ * DAO para videos do programa
  */
 
 
 public class VideoDAO {
-
+    //lista de videos
     public ArrayList<Video> listarVideos() {
 
         ArrayList<Video> lista = new ArrayList<>();
@@ -59,42 +60,44 @@ public class VideoDAO {
 
         String sql =
             "SELECT * FROM videos WHERE titulo ILIKE ?";
-
+        
+        //Conecta e consulta 
         try (
-
+                
             Connection conn = new Conexao().getConnection();
 
             PreparedStatement stmt =
                     conn.prepareStatement(sql)
 
         ) {
-
+            //retorno e executar
             stmt.setString(1, "%" + titulo + "%");
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
 
-                Video video = new Video();
-
+                Video video = new Video();//objeto 
+                //dados de video
                 video.setId(rs.getInt("id"));
                 video.setTitulo(rs.getString("titulo"));
                 video.setDescricao(rs.getString("descricao"));
                 video.setCategoria(rs.getString("categoria"));
                 video.setClassificacaoIndicativa(
-                        rs.getString("classificacao_indicativa")
+                     rs.getString("classificacao_indicativa")
                 );
-
+                
+                //adiciona o video da lista
                 lista.add(video);
             }
-
+            //se não da erro
         } catch (Exception e) {
 
             System.out.println(
                 "Erro ao buscar vídeos: " + e.getMessage()
             );
         }
-
+        //retorna a lista
         return lista;
     }
 }

@@ -7,19 +7,24 @@ package br.edu.fei.model;
 /**
  *
  * @author kamil
+ * Model de curtidas. Faz a ligação entre um usuário e um vídeo,
+ * armazenando quais vídeos foram curtidos por cada usuário.
  */
 public class Curtir {
-    private int usuarioId;
-    private int videoId;
+    private int usuarioId; //ID do usuario que curtiu
+    private int videoId; //ID do video curtido
 
+    //Construtor vazio
     public Curtir() {
     }
 
+    //Construtor completo pegando usuario e video 
     public Curtir(int usuarioId, int videoId) {
         this.usuarioId = usuarioId;
         this.videoId = videoId;
     }
 
+    // Getters e Setters
     public int getUsuarioId() {
         return usuarioId;
     }

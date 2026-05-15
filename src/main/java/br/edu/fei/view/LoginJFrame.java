@@ -10,28 +10,29 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author kamil
+ * tela para logar e a peimeira a aparecer como definido no main do programa chamado feiTv
  */
 public class LoginJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
-    private LoginController controller;
+    private LoginController controller; //controler de login
     /**
      * Creates new form LoginJFrame
      */
     public LoginJFrame() {
-        initComponents ();
-        setLocationRelativeTo(null);
+        initComponents (); //componentes
+        setLocationRelativeTo(null); //centralizar tela
     }
-    
+    //set controller
     public void setController(LoginController controller) {
         this.controller = controller;
     }
 
-    // --- GETTERS PARA O CONTROLLER LER A TELA ---
+    // getters para puxar e-mail e senha
     public String getTfUsuario() {
         return txtEmailLogin.getText();
     }
-
+    
     public String getTfSenha() {
         return new String(txtSenhaLogin.getPassword());
     }
@@ -189,7 +190,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     private void txtEmailLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailLoginActionPerformed
         btnEntrarLoginActionPerformed(evt);
     }//GEN-LAST:event_txtEmailLoginActionPerformed
-
+    //botão para ir a tela de cadastrar
     private void btnIrParaCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrParaCadastroActionPerformed
          CadastroJFrame telaCadastro = new CadastroJFrame();
 
@@ -199,7 +200,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         telaCadastro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIrParaCadastroActionPerformed
-
+    //botão logar
     private void btnEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarLoginActionPerformed
         if (controller == null) {
             JOptionPane.showMessageDialog(this, "Controller não inicializado!");

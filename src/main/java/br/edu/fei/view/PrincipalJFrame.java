@@ -17,10 +17,11 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author kamil
+ * tela principal, a que abre em seguida de login
  */
 public class PrincipalJFrame extends javax.swing.JFrame {
-    private int usuarioId;
-    
+    private int usuarioId; //puxa pelo usuario
+       //set usuario
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
         listarVideosTela();
@@ -30,15 +31,18 @@ public class PrincipalJFrame extends javax.swing.JFrame {
      * Creates new form PrincipalJFrame
      */
     public PrincipalJFrame() {
-        initComponents();
+        initComponents();//componentes
+        setLocationRelativeTo(null); //centraliza tela
+        //apaga a coluna do ID
         tblVideos.getColumnModel().getColumn(0).setMinWidth(0);
         tblVideos.getColumnModel().getColumn(0).setMaxWidth(0);
         tblVideos.getColumnModel().getColumn(0).setWidth(0);
+        //scroller por que o netbeas sumiu com o scroller dessa tabela
         tblVideos.setFillsViewportHeight(true);
         jScrollPane1.setVerticalScrollBarPolicy(
         javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }
-    
+    //lisata do videos e ainda a curtida aparecendo
     public void listarVideosTela() {
 
         VideoDAO dao = new VideoDAO();
@@ -283,7 +287,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //sair do sistema
     private void btnSairPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairPrincipalActionPerformed
        LoginJFrame login = new LoginJFrame();
 
@@ -295,7 +299,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_btnSairPrincipalActionPerformed
-
+     //buscar o video
     private void btnBuscarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVideoActionPerformed
         String titulo = txtBuscarVideo.getText();
 
@@ -329,7 +333,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
                 });
         }
     }//GEN-LAST:event_btnBuscarVideoActionPerformed
-
+    //curtir o video
     private void btnCurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurtirActionPerformed
         int linha = tblVideos.getSelectedRow();
 
@@ -345,7 +349,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         listarVideosTela();
     }//GEN-LAST:event_btnCurtirActionPerformed
-
+    //descurtir o video
     private void btnDescurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescurtirActionPerformed
         int linha = tblVideos.getSelectedRow();
 
@@ -361,7 +365,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         listarVideosTela();
     }//GEN-LAST:event_btnDescurtirActionPerformed
-
+    //ir para favoritos se existir a lista
     private void bntIrParaListaFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaListaFavoritosActionPerformed
         if (usuarioId <= 0) {
 
@@ -372,7 +376,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
             return;
         }
-
+        
         FavoritosDAO dao = new FavoritosDAO();
 
         System.out.println(dao.existeLista(usuarioId));
@@ -393,7 +397,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_bntIrParaListaFavoritosActionPerformed
-
+    //adiciona o video a favoritos para criar a lista de favoridos
     private void bntAdicionarFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAdicionarFavoritoActionPerformed
         int linha = tblVideos.getSelectedRow();
 
