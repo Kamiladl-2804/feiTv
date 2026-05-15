@@ -110,6 +110,9 @@ src
     └── PrincipalJFrame
 ```
 
+## Video de apresentação
+[Assistir apresentação do projeto](https://drive.google.com/file/d/1SGpnqFGKTYbRuM3TXlvkjfEJk87sNeEV/view?usp=drive_link)
+
 ## Autor
 
 Projeto desenvolvido por Kamila Dantas Luongo.
