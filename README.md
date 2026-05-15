@@ -111,7 +111,7 @@ src
 ```
 ## Diagrama do Projeto
 
-![Diagrama](Diagrama.png)
+![Diagrama](diagrama.png)
 
 ## Video de apresentação
 [Assistir apresentação do projeto](https://drive.google.com/file/d/1SGpnqFGKTYbRuM3TXlvkjfEJk87sNeEV/view?usp=drive_link)
