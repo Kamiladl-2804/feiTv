@@ -1,8 +1,10 @@
-# FEITv
+# feiTv
 
 Projeto desenvolvido para a disciplina de Java da FEI com o objetivo de criar uma plataforma de informações sobre filmes, inspirada em serviços de streaming.
 
-Como o professor propôs que tivesse um tema para o trabalho, eu escolhi que todos os vídeos seriam filmes da Marvel.
+## Tema do Projeto
+
+Todos os vídeos cadastrados no sistema são filmes da Marvel, seguindo a proposta temática definida para o trabalho.
 
 ## Funcionalidades
 
@@ -64,7 +66,7 @@ CREATE DATABASE feiTv;
 
 ### 3. Configurar a senha do banco
 
-Criar um arquivo `.env` com a senha do banco:
+Criar um arquivo `.env` com a senha do banco (O arquivo `.env` deve ficar na raiz do projeto):
 
 ```env
 SENHA_DB=sua_senha
@@ -85,6 +87,7 @@ src
 ├── controller
 │   ├── FavoritosController
 │   ├── LoginController
+│   ├── PrincipalController
 │   ├── UsuarioController
 │   └── VideoController
 │
@@ -113,7 +116,21 @@ src
 
 ![Diagrama](diagrama.png)
 
-## Video de apresentação
+## Telas do Sistema
+
+### Login
+![Login](login.png)
+
+### Cadastro
+![Cadastro](cadastro.png)
+
+### Tela Principal
+![Principal](principal.png)
+
+### Favoritos
+![Favoritos](favoritos.png)
+
+## Vídeo de apresentação
 [Assistir apresentação do projeto](https://drive.google.com/file/d/1SGpnqFGKTYbRuM3TXlvkjfEJk87sNeEV/view?usp=drive_link)
 
 ## Autor
