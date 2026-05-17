@@ -63,34 +63,16 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     //lisata do videos e ainda a curtida aparecendo
     public void listarVideosTela() {
 
-        ArrayList<Video> lista =
-            videoController.listarVideos();
+        List<Object[]> lista =
+        videoController.listarVideosParaTabela(usuarioId);
 
         DefaultTableModel modelo =
             (DefaultTableModel) tblVideos.getModel();
 
         modelo.setRowCount(0);
 
-        for (Video video : lista) {
-
-            boolean curtiu = false;
-
-            if (usuarioId > 0) {
-
-                curtiu = videoController.usuarioCurtiu(
-                    usuarioId,
-                    video.getId()
-                );
-            }
-
-            modelo.addRow(new Object[]{
-                    video.getId(),
-                    video.getTitulo(),
-                    video.getDescricao(),
-                    video.getCategoria(),
-                    video.getClassificacaoIndicativa(),
-                    curtiu ? "❤️" : ""
-            });
+        for (Object[] linha : lista) {
+            modelo.addRow(linha);
         }
     }
 
@@ -314,34 +296,19 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     private void btnBuscarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVideoActionPerformed
         String titulo = txtBuscarVideo.getText();
 
-        ArrayList<Video> lista =
-                videoController.buscarVideosPorNome(titulo);
+        List<Object[]> lista =
+                videoController.buscarVideosParaTabela(
+                        titulo,
+                        usuarioId
+                );
 
         DefaultTableModel modelo =
                 (DefaultTableModel) tblVideos.getModel();
 
         modelo.setRowCount(0);
 
-        for (Video video : lista) {
-
-            boolean curtiu = false;
-
-            if (usuarioId > 0) {
-
-                curtiu = videoController.usuarioCurtiu(
-                        usuarioId,
-                        video.getId()
-                );
-            }
-
-            modelo.addRow(new Object[]{
-                    video.getId(),
-                    video.getTitulo(),
-                    video.getDescricao(),
-                    video.getCategoria(),
-                    video.getClassificacaoIndicativa(),
-                    curtiu ? "❤️" : ""
-            });
+        for (Object[] linha : lista) {
+            modelo.addRow(linha);
         }
     }//GEN-LAST:event_btnBuscarVideoActionPerformed
     //curtir o video
@@ -358,18 +325,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_bntIrParaListaFavoritosActionPerformed
     //adiciona o video a favoritos para criar a lista de favoridos
     private void bntAdicionarFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAdicionarFavoritoActionPerformed
-        int linha = tblVideos.getSelectedRow();
-
-        if (linha == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
-            return;
-        }
-
-        int videoId = (int) tblVideos.getValueAt(linha, 0);
-
-        controller.adicionarFavorito(usuarioId, videoId);
-
-        listarVideosTela();
+        controller.adicionarFavorito(this);
     }//GEN-LAST:event_bntAdicionarFavoritoActionPerformed
 
     private void txtBuscarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarVideoActionPerformed

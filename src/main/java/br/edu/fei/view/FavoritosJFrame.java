@@ -31,7 +31,15 @@ public class FavoritosJFrame extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setWidth(0);
     }
-    //set usuario
+    
+    
+    public javax.swing.JTable getTabela() {
+        return jTable1;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
         listarFavoritos();
@@ -44,25 +52,16 @@ public class FavoritosJFrame extends javax.swing.JFrame {
     //config de de lista de favoritos que carrega até a curtida 
     public void listarFavoritos() {
 
-        List<Video> lista = controller.listarFavoritos(usuarioId);
+        List<Object[]> lista =
+            controller.listarFavoritosParaTabela(usuarioId);
 
         DefaultTableModel modelo =
             (DefaultTableModel) jTable1.getModel();
 
         modelo.setRowCount(0);
 
-        for (Video video : lista) {
-
-            boolean curtiu = controller.usuarioCurtiu(usuarioId, video.getId());
-
-            modelo.addRow(new Object[]{
-                video.getId(),
-                video.getTitulo(),
-                video.getDescricao(),
-                video.getCategoria(),
-                video.getClassificacaoIndicativa(),
-                curtiu ? "❤️" : ""
-            });
+        for (Object[] linha : lista) {
+            modelo.addRow(linha);
         }
     }
     /**
@@ -223,36 +222,11 @@ public class FavoritosJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     //excluir o video da lista 
     private void bntExcluirVideoDaListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirVideoDaListaFavoritoActionPerformed
-        int linha = jTable1.getSelectedRow();
-
-        if (linha == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
-            return;
-        }
-
-        int videoId = (int) jTable1.getValueAt(linha, 0);
-
-        controller.removerVideo(usuarioId, videoId);
-
-        listarFavoritos();
+        controller.removerFavorito(this);
     }//GEN-LAST:event_bntExcluirVideoDaListaFavoritoActionPerformed
     //excluir a lista por completo
     private void bntExcluirListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirListaFavoritoActionPerformed
-        int confirm = JOptionPane.showConfirmDialog(
-            this,
-            "Deseja realmente excluir toda a lista?",
-            "Confirmação",
-            JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirm == JOptionPane.YES_OPTION) {
-
-            controller.excluirLista(usuarioId);
-
-            JOptionPane.showMessageDialog(this, "Lista excluída!");
-
-            listarFavoritos();
-        }
+        controller.excluirLista(this);
     }//GEN-LAST:event_bntExcluirListaFavoritoActionPerformed
     //voltar para tela principal
     private void bntIrParaPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaPrincipalActionPerformed

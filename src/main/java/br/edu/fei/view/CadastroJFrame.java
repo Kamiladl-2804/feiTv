@@ -214,47 +214,17 @@ public class CadastroJFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-         try {
+      java.awt.EventQueue.invokeLater(() -> {
 
-            for (
-                    javax.swing.UIManager.LookAndFeelInfo info
-                    : javax.swing.UIManager.getInstalledLookAndFeels()
-            ) {
+        CadastroJFrame tela =
+                new CadastroJFrame();
 
-                if ("Nimbus".equals(info.getName())) {
+        UsuarioController controller =
+                new UsuarioController();
 
-                    javax.swing.UIManager.setLookAndFeel(
-                            info.getClassName()
-                    );
+        tela.setController(controller);
 
-                    break;
-                }
-            }
-
-        } catch (
-                ReflectiveOperationException
-                | javax.swing.UnsupportedLookAndFeelException ex
-        ) {
-
-            logger.log(
-                    java.util.logging.Level.SEVERE,
-                    null,
-                    ex
-            );
-        }
-
-        java.awt.EventQueue.invokeLater(() -> {
-
-            CadastroJFrame tela =
-                    new CadastroJFrame();
-
-            UsuarioController controller =
-                    new UsuarioController();
-
-            tela.setController(controller);
-
-            tela.setVisible(true);
-        });
+        tela.setVisible(true);});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

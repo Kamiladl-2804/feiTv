@@ -12,6 +12,7 @@ import br.edu.fei.view.FavoritosJFrame;
 import br.edu.fei.view.LoginJFrame;
 import br.edu.fei.view.PrincipalJFrame;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 /**
@@ -117,5 +118,114 @@ public class FavoritosController {
         login.setController(new LoginController());
         login.setVisible(true);
         view.dispose();
+    }
+    public void adicionarFavorito(PrincipalJFrame tela) {
+
+        int linha = tela.getTblVideos().getSelectedRow();
+
+        if (linha == -1) {
+
+            tela.mostrarMensagem("Selecione um vídeo!");
+            return;
+        }
+
+        int videoId =
+                (int) tela.getTblVideos().getValueAt(linha, 0);
+
+        int usuarioId = tela.getUsuarioId();
+
+        if (usuarioId <= 0) {
+
+            tela.mostrarMensagem("Usuário inválido!");
+            return;
+        }
+
+        criarListaSeNaoExistir(usuarioId);
+
+        List<Video> favoritos =
+                dao.listarFavoritos(usuarioId);
+
+        for (Video video : favoritos) {
+
+            if (video.getId() == videoId) {
+
+                tela.mostrarMensagem(
+                        "Esse vídeo já está nos favoritos!"
+                );
+
+                return;
+            }
+        }
+
+        dao.adicionarVideo(usuarioId, videoId);
+
+        tela.mostrarMensagem("Adicionado aos favoritos!");
+
+        tela.listarVideosTela();
+    }
+    
+    public List<Object[]> listarFavoritosParaTabela(int usuarioId) {
+
+        List<Video> lista = dao.listarFavoritos(usuarioId);
+
+        List<Object[]> resultado = new ArrayList<>();
+
+        for (Video video : lista) {
+
+            boolean curtiu =
+                    usuarioCurtiu(usuarioId, video.getId());
+
+            resultado.add(new Object[]{
+                video.getId(),
+                video.getTitulo(),
+                video.getDescricao(),
+                video.getCategoria(),
+                video.getClassificacaoIndicativa(),
+                curtiu ? "❤️" : ""
+            });
+        }
+
+        return resultado;
+    }
+    
+    public void removerFavorito(FavoritosJFrame tela) {
+
+        int linha = tela.getTabela().getSelectedRow();
+
+        if (linha == -1) {
+
+            tela.mostrarMensagem("Selecione um vídeo!");
+            return;
+        }
+
+        int videoId =
+                (int) tela.getTabela().getValueAt(linha, 0);
+
+        int usuarioId = tela.getUsuarioId();
+
+        dao.removerVideo(usuarioId, videoId);
+
+        tela.mostrarMensagem("Removido dos favoritos!");
+
+        tela.listarFavoritos();
+    }
+    
+    public void excluirLista(FavoritosJFrame tela) {
+
+        int confirm = JOptionPane.showConfirmDialog(
+                tela,
+                "Deseja realmente excluir toda a lista?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+
+            dao.excluirLista(tela.getUsuarioId());
+
+            tela.mostrarMensagem("Lista excluída!");
+
+            tela.listarFavoritos();
+        }
     }
 }
