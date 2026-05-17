@@ -4,9 +4,8 @@
  */
 package br.edu.fei.view;
 
+import br.edu.fei.controller.FavoritosController;
 import br.edu.fei.model.Video;
-import br.edu.fei.model.dao.CurtirDAO;
-import br.edu.fei.model.dao.FavoritosDAO;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -17,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FavoritosJFrame extends javax.swing.JFrame {
     private int usuarioId;//puxa por usuario
+    private FavoritosController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FavoritosJFrame.class.getName());
   
     /**
@@ -25,6 +25,7 @@ public class FavoritosJFrame extends javax.swing.JFrame {
     public FavoritosJFrame() {
         initComponents();//componentes
         setLocationRelativeTo(null); //centraliza
+        controller = new FavoritosController(this);
         //apagar a coluna de id
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -36,27 +37,23 @@ public class FavoritosJFrame extends javax.swing.JFrame {
         listarFavoritos();
     }
     
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
+    }
+    
     //config de de lista de favoritos que carrega até a curtida 
     public void listarFavoritos() {
 
-        FavoritosDAO dao = new FavoritosDAO();
-
-        List<Video> lista = dao.listarFavoritos(usuarioId);
+        List<Video> lista = controller.listarFavoritos(usuarioId);
 
         DefaultTableModel modelo =
             (DefaultTableModel) jTable1.getModel();
 
         modelo.setRowCount(0);
 
-        CurtirDAO curtidaDAO = new CurtirDAO();
-
         for (Video video : lista) {
 
-            boolean curtiu = false;
-
-            if (usuarioId > 0) {
-                curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
-            }
+            boolean curtiu = controller.usuarioCurtiu(usuarioId, video.getId());
 
             modelo.addRow(new Object[]{
                 video.getId(),
@@ -228,60 +225,42 @@ public class FavoritosJFrame extends javax.swing.JFrame {
     private void bntExcluirVideoDaListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirVideoDaListaFavoritoActionPerformed
         int linha = jTable1.getSelectedRow();
 
-            if (linha == -1) {
-                JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
-                return;
-            }
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
+            return;
+        }
 
-            int videoId = (int) jTable1.getValueAt(linha, 0);
+        int videoId = (int) jTable1.getValueAt(linha, 0);
 
-            FavoritosDAO dao = new FavoritosDAO();
-            dao.removerVideo(usuarioId, videoId);
+        controller.removerVideo(usuarioId, videoId);
 
-            JOptionPane.showMessageDialog(this, "Removido dos favoritos!");
-
-            listarFavoritos();
+        listarFavoritos();
     }//GEN-LAST:event_bntExcluirVideoDaListaFavoritoActionPerformed
     //excluir a lista por completo
     private void bntExcluirListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExcluirListaFavoritoActionPerformed
-         int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Deseja realmente excluir toda a lista?",
-                "Confirmação",
-                JOptionPane.YES_NO_OPTION
-            );
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Deseja realmente excluir toda a lista?",
+            "Confirmação",
+            JOptionPane.YES_NO_OPTION
+        );
 
-            if (confirm == JOptionPane.YES_OPTION) {
+        if (confirm == JOptionPane.YES_OPTION) {
 
-                FavoritosDAO dao = new FavoritosDAO();
-                dao.excluirLista(usuarioId);
+            controller.excluirLista(usuarioId);
 
-                JOptionPane.showMessageDialog(this, "Lista excluída!");
+            JOptionPane.showMessageDialog(this, "Lista excluída!");
 
-                listarFavoritos();
-            }
+            listarFavoritos();
+        }
     }//GEN-LAST:event_bntExcluirListaFavoritoActionPerformed
     //voltar para tela principal
     private void bntIrParaPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaPrincipalActionPerformed
-        PrincipalJFrame tela = new PrincipalJFrame();
-
-        tela.setUsuarioId(usuarioId);
-
-        tela.setVisible(true);
-
-        this.dispose();
+        controller.irParaPrincipal(usuarioId);
     }//GEN-LAST:event_bntIrParaPrincipalActionPerformed
     //sair do programa
     private void btnSairFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairFavoritosActionPerformed
-        LoginJFrame login = new LoginJFrame();
-
-        login.setController(
-            new br.edu.fei.controller.LoginController()
-        );
-
-        login.setVisible(true);
-
-        this.dispose();
+        controller.irParaLogin();
     }//GEN-LAST:event_btnSairFavoritosActionPerformed
 
     /**

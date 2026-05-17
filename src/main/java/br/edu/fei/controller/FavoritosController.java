@@ -4,9 +4,16 @@
  */
 package br.edu.fei.controller;
 
+import javax.swing.JFrame;
 import br.edu.fei.model.dao.FavoritosDAO;
 import br.edu.fei.model.Video;
+import br.edu.fei.model.dao.CurtirDAO;
+import br.edu.fei.view.FavoritosJFrame;
+import br.edu.fei.view.LoginJFrame;
+import br.edu.fei.view.PrincipalJFrame;
+import java.awt.Component;
 import java.util.List;
+import javax.swing.JOptionPane;
 /**
  *
  * @author kamila
@@ -18,12 +25,15 @@ import java.util.List;
 
 public class FavoritosController {
     private final FavoritosDAO dao; //DAO presponsável pelos favoritos
-    
+    private final JFrame view;
     /**
      * Construtor do Controller
      * Inicializa o DAO de favoritos.
      */
-    public FavoritosController() {this.dao = new FavoritosDAO();}
+    public FavoritosController(JFrame view) {
+        this.view = view;
+        this.dao = new FavoritosDAO();
+    }
 
     //Cria a lista de favoritos do usuário caso ela ainda não exista.
     public void criarListaSeNaoExistir(int usuarioId) {
@@ -32,10 +42,55 @@ public class FavoritosController {
     //Adiciona um vídeo à lista de favoritos do usuário.
     public void adicionarVideo(int usuarioId, int videoId) {
         criarListaSeNaoExistir(usuarioId); dao.adicionarVideo(usuarioId, videoId);}
+    
+    public void IrParaFavoritos(int usuarioId) {
 
+        if (usuarioId <= 0) {
+            JOptionPane.showMessageDialog(view,
+                    "Usuário inválido. Faça login novamente.");
+            return;
+        }
+
+        if (!dao.existeLista(usuarioId)) {
+            JOptionPane.showMessageDialog(view,
+                    "Você ainda não possui lista de favoritos.\nAdicione um vídeo para criar sua lista.");
+            return;
+        }
+
+        FavoritosJFrame tela = new FavoritosJFrame();
+        tela.setUsuarioId(usuarioId);
+        tela.setVisible(true);
+
+        view.dispose();
+    }
+
+    public void adicionarFavorito(int usuarioId, int videoId) {
+
+        if (usuarioId <= 0) {
+            JOptionPane.showMessageDialog(view, "Usuário inválido!");
+            return;
+        }
+
+        criarListaSeNaoExistir(usuarioId);
+
+        List<Video> favoritos = dao.listarFavoritos(usuarioId);
+
+        for (Video video : favoritos) {
+            if (video.getId() == videoId) {
+                JOptionPane.showMessageDialog(view, "Esse vídeo já está nos favoritos!");
+                return;
+            }
+        }
+
+        dao.adicionarVideo(usuarioId, videoId);
+
+        JOptionPane.showMessageDialog(view, "Adicionado aos favoritos!");
+    }
+    
     //Remove um vídeo específico da lista de favoritos do usuário.
     public void removerVideo(int usuarioId, int videoId) {
-        dao.removerVideo(usuarioId, videoId);}
+        dao.removerVideo(usuarioId, videoId);
+        JOptionPane.showMessageDialog(view, "Removido dos favoritos!");}
     
     //Exclui toda a lista de favoritos do usuário.
     public void excluirLista(int usuarioId) {dao.excluirLista(usuarioId);}
@@ -43,4 +98,24 @@ public class FavoritosController {
     //Retorna todos os vídeos que estão na lista de favoritos do usuário.
     public List<Video> listarFavoritos(int usuarioId) {
         return dao.listarFavoritos(usuarioId);}
+    
+    public boolean usuarioCurtiu(int usuarioId, int videoId) {
+        return new CurtirDAO().usuarioCurtiu(usuarioId, videoId);
+    }
+    
+    public void irParaPrincipal(int usuarioId) {
+
+        PrincipalJFrame tela = new PrincipalJFrame();
+        tela.setUsuarioId(usuarioId);
+        tela.setVisible(true);
+
+        view.dispose();
+    }
+    
+    public void irParaLogin() {
+        LoginJFrame login = new LoginJFrame();
+        login.setController(new LoginController());
+        login.setVisible(true);
+        view.dispose();
+    }
 }

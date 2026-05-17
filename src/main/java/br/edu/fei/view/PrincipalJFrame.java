@@ -4,10 +4,10 @@
  */
 package br.edu.fei.view;
 
+import br.edu.fei.controller.FavoritosController;
+import br.edu.fei.controller.PrincipalController;
+import br.edu.fei.controller.VideoController;
 import br.edu.fei.model.Video;
-import br.edu.fei.model.dao.VideoDAO;
-import br.edu.fei.model.dao.CurtirDAO;
-import br.edu.fei.model.dao.FavoritosDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -20,18 +20,36 @@ import javax.swing.JOptionPane;
  * tela principal, a que abre em seguida de login
  */
 public class PrincipalJFrame extends javax.swing.JFrame {
-    private int usuarioId; //puxa pelo usuario
+    private int usuarioId; //puxa pelo
+   private FavoritosController controller;
+    private PrincipalController principalController;
+    private final VideoController videoController;
+    
        //set usuario
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
         listarVideosTela();
     }
     
+    public javax.swing.JTable getTblVideos() {
+        return tblVideos;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
+    }
     /**
      * Creates new form PrincipalJFrame
      */
     public PrincipalJFrame() {
         initComponents();//componentes
+        controller = new FavoritosController(this);
+        principalController = new PrincipalController();
+        videoController = new VideoController();
         setLocationRelativeTo(null); //centraliza tela
         //apaga a coluna do ID
         tblVideos.getColumnModel().getColumn(0).setMinWidth(0);
@@ -45,25 +63,26 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     //lisata do videos e ainda a curtida aparecendo
     public void listarVideosTela() {
 
-        VideoDAO dao = new VideoDAO();
-        ArrayList<Video> lista = dao.listarVideos();
+        ArrayList<Video> lista =
+            videoController.listarVideos();
 
         DefaultTableModel modelo =
-                (DefaultTableModel) tblVideos.getModel();
+            (DefaultTableModel) tblVideos.getModel();
 
         modelo.setRowCount(0);
-
-        CurtirDAO curtidaDAO = new CurtirDAO();
 
         for (Video video : lista) {
 
             boolean curtiu = false;
 
             if (usuarioId > 0) {
-                curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
+
+                curtiu = videoController.usuarioCurtiu(
+                    usuarioId,
+                    video.getId()
+                );
             }
 
-            
             modelo.addRow(new Object[]{
                     video.getId(),
                     video.getTitulo(),
@@ -289,39 +308,31 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     //sair do sistema
     private void btnSairPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairPrincipalActionPerformed
-       LoginJFrame login = new LoginJFrame();
-
-        login.setController(
-            new br.edu.fei.controller.LoginController()
-        );
-
-        login.setVisible(true);
-
-        this.dispose();
+       principalController.sair(this);
     }//GEN-LAST:event_btnSairPrincipalActionPerformed
      //buscar o video
     private void btnBuscarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVideoActionPerformed
         String titulo = txtBuscarVideo.getText();
 
-        VideoDAO dao = new VideoDAO();
-        ArrayList<Video> lista = dao.buscarVideosPorNome(titulo);
+        ArrayList<Video> lista =
+                videoController.buscarVideosPorNome(titulo);
 
         DefaultTableModel modelo =
                 (DefaultTableModel) tblVideos.getModel();
 
         modelo.setRowCount(0);
 
-        CurtirDAO curtidaDAO = new CurtirDAO();
-
         for (Video video : lista) {
 
             boolean curtiu = false;
 
             if (usuarioId > 0) {
-                curtiu = curtidaDAO.usuarioCurtiu(usuarioId, video.getId());
+
+                curtiu = videoController.usuarioCurtiu(
+                        usuarioId,
+                        video.getId()
+                );
             }
-            
-            
 
             modelo.addRow(new Object[]{
                     video.getId(),
@@ -330,72 +341,20 @@ public class PrincipalJFrame extends javax.swing.JFrame {
                     video.getCategoria(),
                     video.getClassificacaoIndicativa(),
                     curtiu ? "❤️" : ""
-                });
+            });
         }
     }//GEN-LAST:event_btnBuscarVideoActionPerformed
     //curtir o video
     private void btnCurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurtirActionPerformed
-        int linha = tblVideos.getSelectedRow();
-
-        if (linha == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
-            return;
-        }
-
-        int videoId = (int) tblVideos.getValueAt(linha, 0);
-
-        CurtirDAO dao = new CurtirDAO();
-        dao.curtirVideo(usuarioId, videoId);
-
-        listarVideosTela();
+       videoController.curtirVideo(this);
     }//GEN-LAST:event_btnCurtirActionPerformed
     //descurtir o video
     private void btnDescurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescurtirActionPerformed
-        int linha = tblVideos.getSelectedRow();
-
-        if (linha == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione um vídeo!");
-            return;
-        }
-
-        int videoId = (int) tblVideos.getValueAt(linha, 0);
-
-        CurtirDAO dao = new CurtirDAO();
-        dao.descurtirVideo(usuarioId, videoId);
-
-        listarVideosTela();
+        videoController.descurtirVideo(this);
     }//GEN-LAST:event_btnDescurtirActionPerformed
     //ir para favoritos se existir a lista
     private void bntIrParaListaFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntIrParaListaFavoritosActionPerformed
-        if (usuarioId <= 0) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Usuário inválido. Faça login novamente."
-            );
-
-            return;
-        }
-        
-        FavoritosDAO dao = new FavoritosDAO();
-
-        System.out.println(dao.existeLista(usuarioId));
-        
-        if (!dao.existeLista(usuarioId)) {
-
-            JOptionPane.showMessageDialog(this,
-                    "Você ainda não possui lista de favoritos."
-                + "Adicione um vídeo para criar sua lista.");
-                return;
-        }
-
-        FavoritosJFrame tela = new FavoritosJFrame();
-
-        tela.setUsuarioId(usuarioId);
-
-        tela.setVisible(true);
-
-        this.dispose();
+        controller.IrParaFavoritos(usuarioId);
     }//GEN-LAST:event_bntIrParaListaFavoritosActionPerformed
     //adiciona o video a favoritos para criar a lista de favoridos
     private void bntAdicionarFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAdicionarFavoritoActionPerformed
@@ -408,31 +367,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
         int videoId = (int) tblVideos.getValueAt(linha, 0);
 
-        if (usuarioId <= 0) {
-            JOptionPane.showMessageDialog(this, "Usuário inválido!");
-            return;
-        }
-
-        FavoritosDAO dao = new FavoritosDAO();
-
-        if (!dao.existeLista(usuarioId)) {
-
-            dao.criarLista(usuarioId);
-        }
-        
-        List<Video> favoritos = dao.listarFavoritos(usuarioId);
-
-        for (Video video : favoritos) {
-            if (video.getId() == videoId) {
-                JOptionPane.showMessageDialog(this, "Esse vídeo já está nos favoritos!");
-                return;
-            }
-        }
-        
-        
-        dao.adicionarVideo(usuarioId, videoId);
-
-        JOptionPane.showMessageDialog(this, "Adicionado aos favoritos!");
+        controller.adicionarFavorito(usuarioId, videoId);
 
         listarVideosTela();
     }//GEN-LAST:event_bntAdicionarFavoritoActionPerformed

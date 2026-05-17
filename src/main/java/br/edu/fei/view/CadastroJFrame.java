@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package br.edu.fei.view;
-
-import br.edu.fei.controller.LoginController;
 import br.edu.fei.controller.UsuarioController;
 import javax.swing.JOptionPane;
 
@@ -17,7 +15,7 @@ public class CadastroJFrame extends javax.swing.JFrame {
     // Logger do programa
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CadastroJFrame.class.getName());
     private UsuarioController controller; //controler para cadastrar usuario
-
+    
     /**
      * Creates new form CadastroJFrame
      */
@@ -31,16 +29,20 @@ public class CadastroJFrame extends javax.swing.JFrame {
         this.controller = controller;
     }
     //get dados de cadastro
-    public String getTfNome() {
+    public String getNome() {
         return txtNome.getText();
     }
 
-    public String getTfEmail() {
+    public String getEmail() {
         return txtEmail.getText();
     }
 
-    public String getTfSenha() {
+    public String getSenha() {
         return new String(txtSenhaCadastro.getPassword());
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
     }
     
     /**
@@ -201,49 +203,11 @@ public class CadastroJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomeActionPerformed
     //botão cadastrar com as mensagens
     private void btnFinalizarCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarCadastroActionPerformed
-        if (this.controller != null) {
-
-            controller.cadastrar(
-                    getTfNome(),
-                    getTfEmail(),
-                    getTfSenha()
-            );
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Usuário cadastrado!"
-            );
-
-            LoginJFrame telaLogin = new LoginJFrame();
-
-            telaLogin.setController(
-                new LoginController()
-            );
-
-            telaLogin.setVisible(true);
-
-        
-            this.dispose();
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Erro: Controller não configurado."
-            );
-        }
+         controller.finalizarCadastro(this);
     }//GEN-LAST:event_btnFinalizarCadastroActionPerformed
     //botão que volta para a primeira tela
     private void btntIrParaLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntIrParaLoginActionPerformed
-        LoginJFrame tela = new LoginJFrame();
-
-        tela.setController(
-            new br.edu.fei.controller.LoginController()
-        );
-
-        tela.setVisible(true);
-
-        this.dispose();
+        controller.irParaLogin(this);
     }//GEN-LAST:event_btntIrParaLoginActionPerformed
 
     /**

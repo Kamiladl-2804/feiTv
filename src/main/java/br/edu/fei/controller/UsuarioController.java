@@ -6,6 +6,8 @@ package br.edu.fei.controller;
 
 import br.edu.fei.model.Usuario;
 import br.edu.fei.model.dao.UsuarioDAO;
+import br.edu.fei.view.CadastroJFrame;
+import br.edu.fei.view.LoginJFrame;
 
 /**
  *
@@ -16,17 +18,63 @@ import br.edu.fei.model.dao.UsuarioDAO;
 public class UsuarioController {
     
     //Faz o cadastro do usuário
-    public void cadastrar(
-            String nome,
-            String email,
-            String senha
-    ) {
-        //Cria o objeto usuário de acordo com a tabela do banco
+    public void finalizarCadastro(
+            CadastroJFrame tela
+        ) {
+
+        String nome = tela.getNome();
+        String email = tela.getEmail();
+        String senha = tela.getSenha();
+
+        // Validação dos campos
+        if (
+                nome.isBlank()
+                || email.isBlank()
+                || senha.isBlank()
+        ) {
+
+            tela.mostrarMensagem(
+                    "Preencha todos os campos."
+            );
+
+            return;
+        }
+
         Usuario usuario =
                 new Usuario(nome, email, senha);
 
-        UsuarioDAO dao = new UsuarioDAO(); //DAO que puxa a tabela usuario para cadastro e login
+        UsuarioDAO dao =
+                new UsuarioDAO();
 
-        dao.cadastrarUsuario(usuario); //Chama o método cadastro que esta no DAO
+        dao.cadastrarUsuario(usuario);
+
+        tela.mostrarMensagem(
+                "Usuário cadastrado!"
+        );
+
+        LoginJFrame telaLogin =
+                new LoginJFrame();
+
+        telaLogin.setController(
+                new LoginController()
+        );
+
+        telaLogin.setVisible(true);
+
+        tela.dispose();
+    }
+    
+    public void irParaLogin(
+        CadastroJFrame telaCadastro) {
+
+        LoginJFrame telaLogin =
+            new LoginJFrame();
+
+        telaLogin.setController(
+            new LoginController());
+
+        telaLogin.setVisible(true);
+
+        telaCadastro.dispose();
     }
 }

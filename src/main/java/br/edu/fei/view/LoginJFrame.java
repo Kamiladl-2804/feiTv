@@ -29,15 +29,17 @@ public class LoginJFrame extends javax.swing.JFrame {
     }
 
     // getters para puxar e-mail e senha
-    public String getTfUsuario() {
+    public String getUsuario() {
         return txtEmailLogin.getText();
     }
     
-    public String getTfSenha() {
+    public String getSenha() {
         return new String(txtSenhaLogin.getPassword());
     }
     
-    
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -188,54 +190,15 @@ public class LoginJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtEmailLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailLoginActionPerformed
-        btnEntrarLoginActionPerformed(evt);
+       
     }//GEN-LAST:event_txtEmailLoginActionPerformed
     //botão para ir a tela de cadastrar
     private void btnIrParaCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrParaCadastroActionPerformed
-         CadastroJFrame telaCadastro = new CadastroJFrame();
-
-        telaCadastro.setController(
-            new br.edu.fei.controller.UsuarioController());
-
-        telaCadastro.setVisible(true);
-        this.dispose();
+       controller.irParaCadastro(this);
     }//GEN-LAST:event_btnIrParaCadastroActionPerformed
     //botão logar
     private void btnEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarLoginActionPerformed
-        if (controller == null) {
-            JOptionPane.showMessageDialog(this, "Controller não inicializado!");
-            return;
-        }
-
-        if (getTfUsuario().isEmpty() || getTfSenha().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-            return;
-        }
-
-        Usuario usuario = controller.logar(
-                getTfUsuario(),
-                getTfSenha()
-        );
-
-        if (usuario != null) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Login realizado com sucesso!"
-            );
-
-            PrincipalJFrame principal = new PrincipalJFrame();
-            principal.setUsuarioId(usuario.getId());
-            principal.setVisible(true);
-
-            this.dispose();
-
-        } else {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Usuário ou senha inválidos!"
-            );
-        }
+        controller.entrar(this);
     }//GEN-LAST:event_btnEntrarLoginActionPerformed
 
     /**
