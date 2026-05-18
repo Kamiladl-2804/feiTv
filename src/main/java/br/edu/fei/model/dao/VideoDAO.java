@@ -27,7 +27,7 @@ public class VideoDAO {
         String sql = "SELECT * FROM videos";
 
         try (
-            Connection conn = new Conexao().getConnection();
+            Connection conn = Conexao.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery()
         ) {
@@ -53,7 +53,11 @@ public class VideoDAO {
 
         return lista;
     }
-    
+    /**
+     * 
+     * @param titulo
+     * @return 
+     */
     public ArrayList<Video> buscarVideosPorNome(String titulo) {
 
         ArrayList<Video> lista = new ArrayList<>();
@@ -64,7 +68,7 @@ public class VideoDAO {
         //Conecta e consulta 
         try (
                 
-            Connection conn = new Conexao().getConnection();
+            Connection conn =  Conexao.getConnection();
 
             PreparedStatement stmt =
                     conn.prepareStatement(sql)

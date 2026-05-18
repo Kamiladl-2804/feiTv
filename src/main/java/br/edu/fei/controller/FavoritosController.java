@@ -11,7 +11,6 @@ import br.edu.fei.model.dao.CurtirDAO;
 import br.edu.fei.view.FavoritosJFrame;
 import br.edu.fei.view.LoginJFrame;
 import br.edu.fei.view.PrincipalJFrame;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;

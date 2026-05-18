@@ -15,13 +15,16 @@ import java.sql.SQLException;
  * conexao responsavel por ligar o banco do PostgreSQL com o programa
  */
 public class Conexao {
+    private static Connection conexao;
     //método statico que eu usei para pegar as falhas principalmente das pensagens de confirmação do sistema
     static Connection getConexao() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     //conexao do banco
-    public Connection getConnection() throws SQLException{
+    public static Connection getConnection() throws SQLException{
+        if(conexao == null){ 
+        
         Dotenv dotenv = Dotenv.load(); //carrega o que tem no .env que é só a senha
         
         //conecta no banco
@@ -32,5 +35,6 @@ public class Conexao {
         //mensagem que aparece quando consegue puxar os dados do banco
         System.out.println("Conexao bem sucedida"); 
         return conexao;
+        }else{return conexao;}
     }
 }
