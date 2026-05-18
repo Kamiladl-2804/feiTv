@@ -20,7 +20,7 @@ public class FavoritosDAO {
     public FavoritosDAO() {
         try {
 
-            this.conn = new Conexao().getConnection();
+            this.conn = Conexao.getConnection();
 
         } catch (SQLException e) {
 

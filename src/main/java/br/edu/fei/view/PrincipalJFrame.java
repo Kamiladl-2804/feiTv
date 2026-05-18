@@ -34,7 +34,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     public javax.swing.JTable getTblVideos() {
         return tblVideos;
     }
-
+    
     public int getUsuarioId() {
         return usuarioId;
     }

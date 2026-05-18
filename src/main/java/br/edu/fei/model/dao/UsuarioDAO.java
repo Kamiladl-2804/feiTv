@@ -25,7 +25,7 @@ public class UsuarioDAO {
         //conexao com o banco
         try (
 
-                Connection conn = new Conexao().getConnection();
+                Connection conn = Conexao.getConnection();
 
                 PreparedStatement stmt =
                         conn.prepareStatement(sql)
@@ -55,7 +55,7 @@ public class UsuarioDAO {
         String sql = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
         //conexao do bando
         try (
-            Connection conn = new Conexao().getConnection();
+            Connection conn = Conexao.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
             //busca o e-mail e a senha

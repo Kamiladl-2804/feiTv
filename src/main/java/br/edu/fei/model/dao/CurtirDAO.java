@@ -21,7 +21,7 @@ public class CurtirDAO {
             "INSERT INTO curtidas(usuario_id, video_id) VALUES (?, ?)";
 
         try (
-            Connection conn = new Conexao().getConnection(); //conecta com o banco
+            Connection conn = Conexao.getConnection(); //conecta com o banco
             PreparedStatement stmt = conn.prepareStatement(sql) //SQL
         ) {
 
@@ -51,7 +51,7 @@ public class CurtirDAO {
             "DELETE FROM curtidas WHERE usuario_id = ? AND video_id = ?";
 
         try (
-            Connection conn = new Conexao().getConnection(); //conexao com banco
+            Connection conn = Conexao.getConnection(); //conexao com banco
             PreparedStatement stmt = conn.prepareStatement(sql)//SQL
         ) {
             //parametros
@@ -79,7 +79,7 @@ public class CurtirDAO {
         String sql = "SELECT 1 FROM curtidas WHERE usuario_id = ? AND video_id = ?";
 
         try (
-            Connection conn = new Conexao().getConnection(); //conexao com o banco
+            Connection conn =  Conexao.getConnection(); //conexao com o banco
             PreparedStatement stmt = conn.prepareStatement(sql) //SQL
         ) {
             //parametros

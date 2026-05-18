@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
  */
 
 
+
+
 public class FavoritosController {
     private final FavoritosDAO dao; //DAO presponsável pelos favoritos
     private final JFrame view;
